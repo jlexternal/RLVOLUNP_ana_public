@@ -1,5 +1,14 @@
 # RLVOLUNP_ana_public
-Analysis and model files for the RLVOLUNP study 
+Project files for the RLVOLUNP study.
+
+### 1-TaskGen
+Code used in generating the task data.
+
+### 2-OnlineExpe
+Code used in implementing the task data in the online study.
+
+### 3-Analyses
+Analysis and model fitting/simulation files.
 
 This repository provides all of the analysis used in the study codenamed RLVOLUNP. 
 
