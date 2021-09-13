@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My questionnaire</title>
+    <script src ="jquery/jquery-3.6.0.js"></script>
+    <script src ="jspsych-6.3.0/jspsych.js"></script>
+    <script src ="jspsych-6.3.0/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src ="jspsych-6.3.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src ="jspsych-6.3.0/plugins/jspsych-external-html.js"></script>
+    <!-- Import experiment functions -->
+    <script src ="qn_630.js"></script>
+    <script src ="exec_ques.js"></script>
+  </head>
+  <body></body>
+  <script>
+    var debugFlag = false; // change to true if debugging data is desired
+
+    // parse the URL queries on clientside by itself
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var pid = urlParams.get('prolific_id');
+
+    /* Order of client-side loadings*/
+    var subj_num ; //debug - need this to be brought from database
+    var unique_id; // brought in from server upon receiving subj_num
+
+    // open initial page asking for information coming from Prolific
+    // upon confirmation of data transfer, open up the experiment page
+
+    var timeline = []; // initialized here since used in multiple functions
+
+    $(document).ready(function() {
+    // first ajax GET is made by accessing the actual webpage URL
+    // the ajax call below is needed to get the ID data
+      $.ajax({  // this request might not be necessary
+          url: '/request_id',
+          type: 'POST',
+          data: {pid: pid},
+          success: console.log('SUCCESS ques POST request!'),
+          error: (err) => { console.log(err) }
+      })
+        .done((id_data) => { // upon success of getting the ID
+          unique_id = id_data.uid_ques;
+          // start questionnaire
+          var qns = qn_630(); // create instance of questionnaire battery
+          exec_ques(qns); // to be run upon successful execution of AJAX calls
+        });
+    });
+
+  </script>
+</html>
